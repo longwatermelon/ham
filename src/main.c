@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
     Lexer* lexer = init_lexer("pront(\"Lawl\");");
-    Token* t = init_token(TOKEN_ID, "");
+    Token* t = (void*)0;
 
     while ((t = lexer_get_next_token(lexer))->type != TOKEN_EOF)
     {
@@ -14,6 +14,10 @@ int main(int argc, char** argv)
         safe_free(t->value);
         safe_free(t);
     }
+
+    safe_free(t->value);
+    safe_free(t);
+    safe_free(lexer);
 
     return 0;
 }
