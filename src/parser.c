@@ -15,6 +15,8 @@ Parser* init_parser(const char* fp)
     parser->tokens = malloc(sizeof(Token*));
     parser->tokens_size = 0;
 
+    parser_store_token(parser, parser->current_token);
+
     return parser;
 }
 
@@ -23,8 +25,13 @@ void parser_cleanup(Parser* parser)
 {
     for (int i = 0; i < parser->tokens_size; ++i)
     {
+        if (strlen(parser->tokens[i]->value) == 1)
+            safe_free(parser->tokens[i]->value);
+
         token_cleanup(parser->tokens[i]);
     }
+
+    safe_free(parser->tokens);
 
     lexer_cleanup(parser->lexer);
     free(parser);
@@ -38,9 +45,8 @@ void parser_eat(Parser* parser, int type)
         parser->prev_token->type = parser->current_token->type;
         parser->prev_token->value = parser->current_token->value;
 
-        parser_store_token(parser, parser->prev_token);
-
         parser->current_token = lexer_get_next_token(parser->lexer);
+        parser_store_token(parser, parser->current_token);
     }
     else
     {

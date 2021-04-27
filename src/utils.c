@@ -14,7 +14,7 @@ void string_copy(char** s1, char* s2)
 
 void safe_free(void* ptr)
 {
-    free(ptr);
+    if (ptr) free(ptr);
     ptr = (void*)0;
 }
 
