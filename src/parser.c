@@ -12,12 +12,20 @@ Parser* init_parser(const char* fp)
     parser->current_token = lexer_get_next_token(parser->lexer);
     parser->prev_token = malloc(sizeof(Token));
 
+    parser->garbage_tokens = malloc(sizeof(Token*));
+    parser->garbage_tokens_size = 0;
+
     return parser;
 }
 
 
 void parser_cleanup(Parser* parser)
 {
+    for (int i = 0; i < parser->garbage_tokens_size; ++i)
+    {
+        token_cleanup(parser->garbage_tokens[i]);
+    }
+
     token_cleanup(parser->current_token);
     token_cleanup(parser->prev_token);
 
@@ -33,7 +41,9 @@ void parser_eat(Parser* parser, int type)
         parser->prev_token->type = parser->current_token->type;
         parser->prev_token->value = parser->current_token->value;
 
-        safe_free(parser->current_token);
+        if (!parser_check_if_garbage(parser, parser->current_token))
+            safe_free(parser->current_token);
+            
         parser->current_token = lexer_get_next_token(parser->lexer);
     }
     else
@@ -54,6 +64,7 @@ Node* parser_parse(Parser* parser)
 
     while (parser->lexer->index < strlen(parser->lexer->contents))
     {
+        parser_append_garbage_token(parser, parser->current_token);
         parser_eat(parser, TOKEN_SEMI);
 
         Node* expr = parser_parse_expr(parser);
@@ -136,11 +147,13 @@ Node* parser_parse_variable(Parser* parser)
 
 Node* parser_parse_variable_definition(Parser* parser)
 {
+    parser_append_garbage_token(parser, parser->current_token);
     parser_eat(parser, TOKEN_ID);
 
     char* name = parser->current_token->value;
 
     parser_eat(parser, TOKEN_ID);
+    parser_append_garbage_token(parser, parser->current_token);
     parser_eat(parser, TOKEN_EQUALS);
 
     Node* value = parser_parse_expr(parser);
@@ -161,6 +174,7 @@ Node* parser_parse_function_call(Parser* parser)
 
     function_call->function_call_name = parser->prev_token->value;
 
+    parser_append_garbage_token(parser, parser->current_token);
     parser_eat(parser, TOKEN_LPAREN);
 
     function_call->function_call_args = malloc(sizeof(Node*));
@@ -170,6 +184,7 @@ Node* parser_parse_function_call(Parser* parser)
 
     while (parser->current_token->type != TOKEN_RPAREN)
     {
+        parser_append_garbage_token(parser, parser->current_token);
         parser_eat(parser, TOKEN_COMMA);
 
         Node* expr = parser_parse_expr(parser);
@@ -183,7 +198,27 @@ Node* parser_parse_function_call(Parser* parser)
         function_call->function_call_args[function_call->function_call_args_size - 1] = expr;
     }
 
+    parser_append_garbage_token(parser, parser->current_token);
     parser_eat(parser, TOKEN_RPAREN);
 
     return function_call;
+}
+
+
+void parser_append_garbage_token(Parser* parser, Token* token)
+{
+    ++parser->garbage_tokens_size;
+    parser->garbage_tokens = realloc(parser->garbage_tokens, parser->garbage_tokens_size * sizeof(Token*));
+    parser->garbage_tokens[parser->garbage_tokens_size - 1] = token;
+}
+
+
+bool parser_check_if_garbage(Parser* parser, Token* token)
+{
+    for (int i = 0; i < parser->garbage_tokens_size; ++i)
+    {
+        if (parser->garbage_tokens[i] == token) return true;
+    }
+
+    return false;
 }
