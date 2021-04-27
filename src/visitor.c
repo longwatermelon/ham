@@ -16,6 +16,8 @@ Visitor* init_visitor()
 
 Node* visitor_visit(Visitor* visitor, Node* node)
 {
+    if (!node) return node;
+
     switch (node->type)
     {
         case NODE_VARIABLE_DEFINITION: return visitor_visit_variable_definition(visitor, node);
@@ -75,7 +77,7 @@ Node* visitor_visit_compound(Visitor* visitor, Node* node)
         visitor_visit(visitor, node->compound_value[i]);
     }
 
-    return init_node(NODE_NOOP);
+    return (void*)0;
 }
 
 
@@ -125,5 +127,5 @@ static Node* builtin_function_print(Visitor* visitor, Node** args, size_t args_s
 
     printf("\n");
 
-    return init_node(NODE_NOOP);
+    return (void*)0;
 }
