@@ -1,5 +1,6 @@
 #ifndef TOKEN_H
 #define TOKEN_H
+#include <stdbool.h>
 
 
 typedef struct
@@ -18,6 +19,7 @@ typedef struct
     } type;
 
     char* value;
+    bool is_trash;
 } Token;
 
 Token* init_token(int type, char* value);

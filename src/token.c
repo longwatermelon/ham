@@ -8,6 +8,7 @@ Token* init_token(int type, char* value)
     Token* t = malloc(sizeof(Token));
     t->type = type;
     t->value = value;
+    t->is_trash = false;
 
     return t;
 }
