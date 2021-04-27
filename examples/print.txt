@@ -1,0 +1,2 @@
+pront("hello world");
+pront("test", 1, "arg");

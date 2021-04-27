@@ -13,6 +13,7 @@ typedef struct
 } Lexer;
 
 Lexer* init_lexer(char* contents);
+void lexer_cleanup(Lexer* lexer);
 
 void lexer_advance(Lexer* lexer);
 

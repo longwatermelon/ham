@@ -18,6 +18,13 @@ Lexer* init_lexer(char* contents)
 }
 
 
+void lexer_cleanup(Lexer* lexer)
+{
+    safe_free(lexer->contents);
+    safe_free(lexer);
+}
+
+
 void lexer_advance(Lexer* lexer)
 {
     if (lexer->current_char != '\0' && lexer->index < strlen(lexer->contents))

@@ -21,5 +21,6 @@ typedef struct
 } Token;
 
 Token* init_token(int type, char* value);
+void token_cleanup(Token* token);
 
 #endif

@@ -11,3 +11,10 @@ Token* init_token(int type, char* value)
 
     return t;
 }
+
+
+void token_cleanup(Token* token)
+{
+    safe_free(token->value);
+    safe_free(token);
+}
