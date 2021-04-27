@@ -22,7 +22,7 @@ typedef struct
     bool is_trash;
 } Token;
 
-Token* init_token(int type, char* value);
+Token* init_token(int type, char* value, bool is_trash);
 void token_cleanup(Token* token);
 
 #endif

@@ -3,12 +3,12 @@
 #include <stdlib.h>
 
 
-Token* init_token(int type, char* value)
+Token* init_token(int type, char* value, bool is_trash)
 {
     Token* t = malloc(sizeof(Token));
     t->type = type;
     t->value = value;
-    t->is_trash = false;
+    t->is_trash = is_trash;
 
     return t;
 }

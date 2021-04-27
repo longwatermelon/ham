@@ -102,28 +102,28 @@ Token* lexer_get_next_token(Lexer* lexer)
             lexer_advance(lexer);
 
         if (lexer->current_char == '"')
-            return init_token(TOKEN_STRING, lexer_collect_string(lexer));
+            return init_token(TOKEN_STRING, lexer_collect_string(lexer), false);
         
         if (isdigit(lexer->current_char))
-            return init_token(TOKEN_INT, lexer_collect_int(lexer));
+            return init_token(TOKEN_INT, lexer_collect_int(lexer), false);
 
         if (isalnum(lexer->current_char))
-            return init_token(TOKEN_ID, lexer_collect_id(lexer));
+            return init_token(TOKEN_ID, lexer_collect_id(lexer), false);
 
         switch (lexer->current_char)
         {
-            case ';': return lexer_awt(lexer, init_token(TOKEN_SEMI, lexer_collect_char_as_string(lexer)));
-            case '=': return lexer_awt(lexer, init_token(TOKEN_EQUALS, lexer_collect_char_as_string(lexer)));
-            case '(': return lexer_awt(lexer, init_token(TOKEN_LPAREN, lexer_collect_char_as_string(lexer)));
-            case ')': return lexer_awt(lexer, init_token(TOKEN_RPAREN, lexer_collect_char_as_string(lexer)));
-            case ',': return lexer_awt(lexer, init_token(TOKEN_COMMA, lexer_collect_char_as_string(lexer)));
+            case ';': return lexer_awt(lexer, init_token(TOKEN_SEMI, lexer_collect_char_as_string(lexer), true));
+            case '=': return lexer_awt(lexer, init_token(TOKEN_EQUALS, lexer_collect_char_as_string(lexer), true));
+            case '(': return lexer_awt(lexer, init_token(TOKEN_LPAREN, lexer_collect_char_as_string(lexer), true));
+            case ')': return lexer_awt(lexer, init_token(TOKEN_RPAREN, lexer_collect_char_as_string(lexer), true));
+            case ',': return lexer_awt(lexer, init_token(TOKEN_COMMA, lexer_collect_char_as_string(lexer), true));
         }
 
         lexer_advance(lexer);
         ++lexer->line_num;
     }
 
-    return init_token(TOKEN_EOF, calloc(1, sizeof(char)));
+    return init_token(TOKEN_EOF, calloc(1, sizeof(char)), true);
 }
 
 

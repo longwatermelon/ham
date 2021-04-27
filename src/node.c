@@ -37,6 +37,7 @@ Node* init_node(int type)
 void node_cleanup(Node* node)
 {
     if (!node) return;
+
     safe_free(node->string_value);
     safe_free(node->function_call_name);
     safe_free(node->variable_definition_name);
