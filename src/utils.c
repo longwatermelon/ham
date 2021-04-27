@@ -44,4 +44,7 @@ char* read_file(const char* fp)
         fclose(f);
         return buf;
     }
+
+    printf("couldnt open file %s\n", fp);
+    exit(1);
 }

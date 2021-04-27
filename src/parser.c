@@ -160,7 +160,6 @@ Node* parser_parse_variable_definition(Parser* parser)
     Node* variable_def = init_node(NODE_VARIABLE_DEFINITION);
 
     variable_def->variable_name = name;
-
     variable_def->variable_definition_value = value;
 
     return variable_def;
