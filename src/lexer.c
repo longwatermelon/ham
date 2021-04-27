@@ -105,7 +105,8 @@ Token* lexer_get_next_token(Lexer* lexer)
             return init_token(TOKEN_STRING, lexer_collect_string(lexer), false);
         
         if (isdigit(lexer->current_char))
-            return init_token(TOKEN_INT, lexer_collect_int(lexer), false);
+            // is_trash set to true because the string value is casted and copied instead of directly copying the pointer, causing a memory leak
+            return init_token(TOKEN_INT, lexer_collect_int(lexer), true);
 
         if (isalnum(lexer->current_char))
             return init_token(TOKEN_ID, lexer_collect_id(lexer), false);
