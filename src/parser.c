@@ -31,7 +31,6 @@ void parser_eat(Parser* parser, int type)
     if (parser->current_token->type == type)
     {
         parser->prev_token->type = parser->current_token->type;
-        safe_free(parser->prev_token->value);
         parser->prev_token->value = parser->current_token->value;
 
         safe_free(parser->current_token);
@@ -86,7 +85,7 @@ Node* parser_parse_expr(Parser* parser)
 Node* parser_parse_string(Parser* parser)
 {
     Node* node_str = init_node(NODE_STRING);
-    string_copy(&node_str->string_value, parser->current_token->value);
+    node_str->string_value = parser->current_token->value;
 
     parser_eat(parser, TOKEN_STRING);
 
@@ -129,7 +128,7 @@ Node* parser_parse_variable(Parser* parser)
     }
 
     Node* node_var = init_node(NODE_VARIABLE);
-    string_copy(&node_var->variable_name, token_value);
+    node_var->variable_name = token_value;
 
     return node_var;
 }
@@ -148,7 +147,7 @@ Node* parser_parse_variable_definition(Parser* parser)
 
     Node* variable_def = init_node(NODE_VARIABLE_DEFINITION);
 
-    string_copy(&variable_def->variable_name, name);
+    variable_def->variable_name = name;
 
     variable_def->variable_definition_value = value;
 
@@ -160,7 +159,7 @@ Node* parser_parse_function_call(Parser* parser)
 {
     Node* function_call = init_node(NODE_FUNCTION_CALL);
 
-    string_copy(&function_call->function_call_name, parser->prev_token->value);
+    function_call->function_call_name = parser->prev_token->value;
 
     parser_eat(parser, TOKEN_LPAREN);
 
