@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
     parser_cleanup(parser);
     node_cleanup(root);
-    visitor_cleanup(visitor);
+    safe_free(visitor);
 
     return 0;
 }

@@ -25,7 +25,7 @@ void parser_cleanup(Parser* parser)
 {
     for (int i = 0; i < parser->tokens_size; ++i)
     {
-        if (strlen(parser->tokens[i]->value) == 1)
+        if (parser->tokens[i]->is_trash)
             safe_free(parser->tokens[i]->value);
 
         safe_free(parser->tokens[i]);

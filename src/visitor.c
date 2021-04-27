@@ -10,27 +10,7 @@ Visitor* init_visitor()
     visitor->variable_defs = (void*)0;
     visitor->variable_defs_size = 0;
 
-    visitor->nodes_to_free = (void*)0;
-    visitor->nodes_to_free_size = 0;
-
     return visitor;
-}
-
-
-void visitor_cleanup(Visitor* visitor)
-{
-    for (size_t i = 0; i < visitor->variable_defs_size; ++i)
-    {
-        safe_free(visitor->variable_defs[i]);
-    }
-
-    for (size_t i = 0; i < visitor->nodes_to_free_size; ++i)
-    {
-        node_cleanup(visitor->nodes_to_free[i]);
-    }
-
-    safe_free(visitor->variable_defs);
-    safe_free(visitor);
 }
 
 
@@ -80,11 +60,8 @@ Node* visitor_visit_variable(Visitor* visitor, Node* node)
 
         if (strcmp(def->variable_definition_name, node->variable_name) == 0)
         {
-            visitor_append_to_freed(visitor, def);
             return visitor_visit(visitor, def->variable_definition_value);
         }
-
-        visitor_append_to_freed(visitor, def);
     }
 
     printf("undefined variable '%s\n", node->variable_name);
@@ -144,8 +121,6 @@ static Node* builtin_function_print(Visitor* visitor, Node** args, size_t args_s
             case NODE_INT: printf("%d ", visited->int_value); break;
             default: printf("%p ", visited);
         }
-
-        node_cleanup(visited);
     }
 
     printf("\n");

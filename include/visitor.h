@@ -14,7 +14,6 @@ typedef struct
 } Visitor;
 
 Visitor* init_visitor();
-void visitor_cleanup(Visitor* visitor);
 
 Node* visitor_visit(Visitor* visitor, Node* node);
 
