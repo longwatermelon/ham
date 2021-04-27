@@ -207,7 +207,7 @@ Node* parser_parse_function_call(Parser* parser)
 }
 
 
-void parser_store_token(Parser* parser, Token* token)
+static void parser_store_token(Parser* parser, Token* token)
 {
     ++parser->tokens_size;
     parser->tokens = realloc(parser->tokens, parser->tokens_size * sizeof(Token*));

@@ -31,6 +31,6 @@ Node* parser_parse_variable(Parser* parser);
 Node* parser_parse_variable_definition(Parser* parser);
 Node* parser_parse_function_call(Parser* parser);
 
-void parser_store_token(Parser* parser, Token* token);
+static void parser_store_token(Parser* parser, Token* token);
 
 #endif
