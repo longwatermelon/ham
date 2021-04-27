@@ -28,7 +28,7 @@ void parser_cleanup(Parser* parser)
         if (strlen(parser->tokens[i]->value) == 1)
             safe_free(parser->tokens[i]->value);
 
-        token_cleanup(parser->tokens[i]);
+        safe_free(parser->tokens[i]);
     }
 
     safe_free(parser->tokens);
