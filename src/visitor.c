@@ -14,6 +14,13 @@ Visitor* init_visitor()
 }
 
 
+void visitor_cleanup(Visitor* visitor)
+{
+    safe_free(visitor->variable_defs);
+    safe_free(visitor);
+}
+
+
 Node* visitor_visit(Visitor* visitor, Node* node)
 {
     if (!node) return node;
@@ -90,24 +97,6 @@ Node* visitor_visit_function_call(Visitor* visitor, Node* node)
 
     printf("undefined function '%s'\n", node->function_call_name);
     exit(1);
-}
-
-
-static void visitor_append_to_freed(Visitor* visitor, Node* node)
-{
-    ++visitor->nodes_to_free_size;
-
-    if (!visitor->nodes_to_free)
-    {
-        visitor->nodes_to_free = malloc(sizeof(Node*));
-        visitor->nodes_to_free[0] = node;
-        ++visitor->nodes_to_free_size;
-    }
-    else
-    {
-        visitor->nodes_to_free = realloc(visitor->nodes_to_free, visitor->nodes_to_free_size * sizeof(Node));
-        visitor->nodes_to_free[visitor->nodes_to_free_size - 1] = node;
-    }
 }
 
 
