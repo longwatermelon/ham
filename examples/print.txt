@@ -1,3 +1,6 @@
-def x = 5;
+def x = "string";
+def y = "string 2";
+def z = 2;
 pront(x);
-pront("hello", "world", x, 3);
+pront(y);
+pront(x, y, z);

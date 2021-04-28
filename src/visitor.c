@@ -36,7 +36,7 @@ Node* visitor_visit(Visitor* visitor, Node* node)
         case NODE_NOOP: return node;
     }
 
-    printf("uncaught statemnet of type %d\n", node->type);
+    printf("uncaught statement of type %d\n", node->type);
     exit(1);
 }
 
@@ -49,7 +49,6 @@ Node* visitor_visit_variable_definition(Visitor* visitor, Node* node)
     {
         visitor->variable_defs = malloc(sizeof(Node*));
         visitor->variable_defs[0] = node;
-        ++visitor->variable_defs_size;
     }
     else
     {
@@ -73,7 +72,7 @@ Node* visitor_visit_variable(Visitor* visitor, Node* node)
         }
     }
 
-    printf("undefined variable '%s\n", node->variable_name);
+    printf("undefined variable '%s'\n", node->variable_name);
 }
 
 
