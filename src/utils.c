@@ -48,3 +48,9 @@ char* read_file(const char* fp)
     printf("couldnt open file %s\n", fp);
     exit(1);
 }
+
+
+bool check_if_garbage_string(char* string)
+{
+    return strcmp(string, "def") == 0;
+}

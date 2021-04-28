@@ -10,7 +10,7 @@ Parser* init_parser(const char* fp)
     char* contents = read_file(fp);
     parser->lexer = init_lexer(contents);
     parser->current_token = lexer_get_next_token(parser->lexer);
-    parser->prev_token = parser->current_token;
+    parser->prev_token = init_token(TOKEN_ID, (void*)0, false);
 
     parser->tokens = malloc(sizeof(Token*));
     parser->tokens_size = 0;
@@ -31,6 +31,7 @@ void parser_cleanup(Parser* parser)
         safe_free(parser->tokens[i]);
     }
 
+    safe_free(parser->prev_token);
     safe_free(parser->tokens);
 
     lexer_cleanup(parser->lexer);
@@ -50,7 +51,7 @@ void parser_eat(Parser* parser, int type)
     }
     else
     {
-        printf("unexpected token '%s' at line %d\n", parser->current_token->value, parser->lexer->line_num);
+        printf("unexpected token '%s' at line %ld\n", parser->current_token->value, parser->lexer->line_num);
         exit(1);
     }
 }

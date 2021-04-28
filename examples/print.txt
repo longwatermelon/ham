@@ -1,5 +1,3 @@
-pront("hello world");
-pront("test", 1, "arg");
-
 def x = 5;
 pront(x);
+pront("hello", "world", x, 3);

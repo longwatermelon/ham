@@ -109,7 +109,12 @@ Token* lexer_get_next_token(Lexer* lexer)
             return init_token(TOKEN_INT, lexer_collect_int(lexer), true);
 
         if (isalnum(lexer->current_char))
-            return init_token(TOKEN_ID, lexer_collect_id(lexer), false);
+        {
+            char* id = lexer_collect_id(lexer);
+            bool is_garbage = check_if_garbage_string(id);
+
+            return init_token(TOKEN_ID, id, is_garbage);
+        }
 
         switch (lexer->current_char)
         {
