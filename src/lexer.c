@@ -111,6 +111,7 @@ Token* lexer_get_next_token(Lexer* lexer)
         if (isalnum(lexer->current_char))
         {
             char* id = lexer_collect_id(lexer);
+            // key words like "def" won't make it into the ast, so it needs to be freed as part of parser_cleanup
             bool is_garbage = check_if_garbage_string(id);
 
             return init_token(TOKEN_ID, id, is_garbage);
