@@ -1,3 +1,3 @@
-# ham-rewrite
+# ham
 
 ham programming language
